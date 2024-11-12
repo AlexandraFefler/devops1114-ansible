@@ -1,0 +1,47 @@
+---
+- name: Install packages on VM
+  hosts: myvms
+  become: yes
+  vars: 
+    title_test: "Welcome to a crazy engaging site"
+
+  tasks:
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Install net-tools
+      apt:
+        name: net-tools
+        state: present
+
+    - name: deploy styles.css
+      template:
+        src: ./styles.css
+        dest: ./websiteDir4/
+        mode: '0644'
+   
+    - name: deploy a website
+      template:
+        src: ./engagingWebsite.html
+        dest: ./websiteDir4/
+        mode: '0644'
+
+    - name: deploy a random testing file
+      template:
+        src: ./random.txt
+        dest: ./websiteDir4/
+        mode: '0644'
+    
+
+    - name: Ensure Apache is running
+      service:
+        name: apache2
+        state: started
+        enabled: yes
